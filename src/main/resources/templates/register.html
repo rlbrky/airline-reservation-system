@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('Register')}"></head>
+
+<body>
+    <div class="container">
+        <p class="message" th:if="${message}" th:text="${message}"></p>
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <form class="stacked-form" th:action="@{/register}" th:object="${registerForm}" method="post">
+            <span class="field-error" th:errors="*{username}"></span>
+            <input type="text"     th:field="*{username}" placeholder="Username"/>
+            <span class="field-error" th:errors="*{fullName}"></span>
+            <input type="text"     th:field="*{fullName}"     placeholder="Full Name"/>
+            <span class="field-error" th:errors="*{password}"></span>
+            <input type="password" th:field="*{password}"           placeholder="Password"/>
+            <span class="field-error" th:errors="*{passwordsMatching}"></span>
+            <input type="password" th:field="*{confirmPassword}"           placeholder="Confirm Password"/>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>
