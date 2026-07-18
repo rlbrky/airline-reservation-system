@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('Details')}"></head>
+<body>
+    <nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+    <div class="container">
+        <h1 th:text="${flight.flightNumber}"></h1>
+        <p th:text="${flight.origin.city + ' -> ' + flight.destination.city}"></p>
+        <p th:text="${#temporals.format(flight.departureTime, 'yyyy-MM-dd HH:mm')} + ' -- ' + ${#temporals.format(flight.arrivalTime, 'yyyy-MM-dd HH:mm')}"></p>
+        <p><span th:text="${availableSeatCount}"></span> seats available</p>
+
+        <div class="seat-map">
+            <div th:each="seat : ${seats}"
+                 th:classappend="${seat.seatStatus.name() == 'AVAILABLE'} ? 'seat-available' : 'seat-booked'"
+                 th:text="${seat.seatNumber}"
+                 th:title="${seat.seatClass}"
+            >
+            </div>
+        </div>
+
+        <div class="legend">
+            <span class="seat-available">&nbsp;</span> Available
+            <span class="seat-booked">&nbsp;</span> Booked
+        </div>
+    </div>
+</body>
+</html>

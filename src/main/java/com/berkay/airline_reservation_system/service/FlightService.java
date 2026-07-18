@@ -34,4 +34,10 @@ public class FlightService {
 
         return flightRepository.search(originCode, destinationCode, start, end);
     }
+
+    @Transactional(readOnly = true)
+    public Flight getById(Long id) {
+        return flightRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Flight not found: " + id));
+    }
 }

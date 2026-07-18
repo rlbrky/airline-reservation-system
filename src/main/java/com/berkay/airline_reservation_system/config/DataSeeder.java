@@ -4,6 +4,8 @@ import com.berkay.airline_reservation_system.model.Airport;
 import com.berkay.airline_reservation_system.model.Flight;
 import com.berkay.airline_reservation_system.repository.AirportRepository;
 import com.berkay.airline_reservation_system.repository.FlightRepository;
+import com.berkay.airline_reservation_system.repository.SeatRepository;
+import com.berkay.airline_reservation_system.service.SeatService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -20,14 +22,22 @@ public class DataSeeder implements CommandLineRunner {
 
     private final FlightRepository flightRepository;
 
-    public DataSeeder(AirportRepository airportRepository, FlightRepository flightRepository) {
+    private final SeatRepository seatRepository;
+
+    private final SeatService seatService;
+
+    public DataSeeder(AirportRepository airportRepository, FlightRepository flightRepository, SeatRepository seatRepository, SeatService seatService) {
         this.airportRepository = airportRepository;
         this.flightRepository = flightRepository;
+        this.seatRepository = seatRepository;
+        this.seatService = seatService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        if(airportRepository.count() == 0){
+
+        // Generate airports
+        if(airportRepository.count() == 0) {
             Airport airport1 = new Airport();
             airport1.setCity("Istanbul");
             airport1.setName("Istanbul");
@@ -59,6 +69,7 @@ public class DataSeeder implements CommandLineRunner {
             airportRepository.save(airport5);
         }
 
+        // Generate flights
         if(flightRepository.count() == 0){
             Flight flight1 = new Flight();
             flight1.setFlightNumber("101");
@@ -140,6 +151,13 @@ public class DataSeeder implements CommandLineRunner {
             flight9.setArrivalTime(LocalDateTime.of(2026, Month.JULY, 21, 19, 45));
             flight9.setPrice(BigDecimal.valueOf(250));
             flightRepository.save(flight9);
+        }
+
+        // Generate seats for flights that lack seats.
+        for (Flight f : flightRepository.findAll()) {
+            if (seatRepository.findByFlight(f).isEmpty()) {
+                seatService.generateSeats(f, 10);
+            }
         }
     }
 }

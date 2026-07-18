@@ -48,7 +48,7 @@
 
             <tbody>
                 <tr th:each="flight : ${flights}">
-                    <td th:text="${flight.flightNumber}"></td>
+                    <td><a th:href="@{/flights/{id}(id=${flight.id})}" th:text="${flight.flightNumber}"></a></td>
                     <td th:text="${flight.origin.city + ' (' + flight.origin.name + ')'}"></td>
                     <td th:text="${flight.destination.city + ' (' + flight.destination.name + ')'}"></td>
                     <td th:text="${#temporals.format(flight.departureTime, 'yyyy-MM-dd HH:mm')}"></td>
