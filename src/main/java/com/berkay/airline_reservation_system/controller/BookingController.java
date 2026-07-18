@@ -59,7 +59,7 @@ public class BookingController {
             ra.addFlashAttribute("message", "Booking has been successfully cancelled!");
             ra.addFlashAttribute("bookingReference", bookingRef);
         } catch (IllegalArgumentException e) {
-            ra.addFlashAttribute("error", "No such booking: " + bookingRef);
+            ra.addFlashAttribute("error", e.getMessage());
         }
 
         return "redirect:/bookings";
