@@ -11,12 +11,25 @@
         <p><span th:text="${availableSeatCount}"></span> seats available</p>
 
         <div class="seat-map">
-            <div th:each="seat : ${seats}"
-                 th:classappend="${seat.seatStatus.name() == 'AVAILABLE'} ? 'seat-available' : 'seat-booked'"
-                 th:text="${seat.seatNumber}"
-                 th:title="${seat.seatClass}"
-            >
-            </div>
+            <th:block th:each="seat : ${seats}">
+
+                <!-- Button itself is the seat and can act as a form -->
+                <form th:if="${seat.seatStatus.name() == 'AVAILABLE'}"
+                      th:action="@{/bookings}" method="post">
+                    <input type="hidden" name="seatId" th:value="${seat.id}"/>
+                    <button type="submit" class="seat seat-available"
+                            th:text="${seat.seatNumber}"
+                            th:title="${seat.seatClass}"></button>
+                </form>
+
+                <!-- BOOKED -> Plain - nonclickable -->
+                <div th:unless="${seat.seatStatus.name() == 'AVAILABLE'}"
+                     class="seat seat-booked"
+                     th:text="${seat.seatNumber}"
+                     th:title="${seat.seatClass}"
+                >
+                </div>
+            </th:block>
         </div>
 
         <div class="legend">
