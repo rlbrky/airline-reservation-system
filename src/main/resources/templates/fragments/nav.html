@@ -10,6 +10,7 @@
 <body>
 <nav th:fragment="navbar">
     <a th:href="@{/}">Home</a>
+    <a th:href="@{/flights}">Flights</a>
     <a sec:authorize="hasRole('ADMIN')"
        th:href="@{/admin/flights}">Admin</a>
     <form th:action="@{/logout}" method="post" style="display:inline">

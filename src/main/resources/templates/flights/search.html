@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('Flights')}"></head>
+
+<body>
+    <nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+    <div class="container">
+        <h1>Search Flights</h1>
+
+        <form th:action="@{/flights}" method="get">
+            <select name="origin">
+                <option value="">Origin</option>
+                <!-- One option per airport: keep chosen one selected after search -->
+                <option th:each="airport : ${airports}"
+                        th:value="${airport.code}"
+                        th:text="${airport.city + ' (' + airport.name + ')'}"
+                        th:selected="${airport.code == origin}"></option>
+            </select>
+
+            <select name="destination">
+                <option value="">Destination</option>
+                <option th:each="airport : ${airports}"
+                        th:value="${airport.code}"
+                        th:text="${airport.city + ' (' + airport.name + ')'}"
+                        th:selected="${airport.code == destination}"></option>
+            </select>
+
+            <input type="date" name="date" th:value="${date}"/>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- origin == destination validation message -->
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <!-- Only after search found something to show -->
+        <table class="result-table" th:if="${flights != null and !flights.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Flight</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="flight : ${flights}">
+                    <td th:text="${flight.flightNumber}"></td>
+                    <td th:text="${flight.origin.city + ' (' + flight.origin.name + ')'}"></td>
+                    <td th:text="${flight.destination.city + ' (' + flight.destination.name + ')'}"></td>
+                    <td th:text="${#temporals.format(flight.departureTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#temporals.format(flight.arrivalTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${flight.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Searched but nothing matched -->
+        <p class="message" th:if="${flights != null and flights.isEmpty()}">No flights found for this search.</p>
+    </div>
+</body>
+</html>
