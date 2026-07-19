@@ -19,7 +19,8 @@
                     <input type="hidden" name="seatId" th:value="${seat.id}"/>
                     <button type="submit" class="seat seat-available"
                             th:text="${seat.seatNumber}"
-                            th:title="${seat.seatClass}"></button>
+                            th:title="${seat.seatClass}">
+                    </button>
                 </form>
 
                 <!-- BOOKED -> Plain - nonclickable -->

@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head(pageTitle)">
-    <meta charset="UTF-8">
-    <title th:text="${pageTitle}">Airline Reservation</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-</head>
 <body>
 <nav th:fragment="navbar">
     <a th:href="@{/}">Home</a>
-    <a th:href="@{/flights}">Flights</a>
-    <a th:href="@{/bookings}">My Bookings</a>
+    <a th:href="@{/admin/airports}">Airports</a>
+    <a th:href="@{/admin/bookings}">Bookings</a>
+    <a th:href="@{/admin/flights}">Flights</a>
     <form th:action="@{/logout}" method="post" style="display:inline">
         <button type="submit">Logout</button>
     </form>

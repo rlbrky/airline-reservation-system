@@ -1,47 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/nav :: head('My Bookings')}"></head>
-
+<head th:replace="~{fragments/nav :: head('Bookings')}"></head>
 <body>
-    <nav th:replace="~{fragments/nav :: navbar}"></nav>
+    <nav th:replace="~{fragments/adminNav :: navbar}"></nav>
 
     <div class="container">
-        <h1>My Bookings</h1>
 
-        <!-- Flash messages from book/cancel redirects -->
-        <p class="message" th:if="${message}" th:text="${message}"></p>
-        <p class="message" th:if="${bookingReference}"
-            th:text="'Reference: ' + ${bookingReference}"></p>
-        <p class="error" th:if="${error}" th:text="${error}"></p>
-
-        <!-- Empty State -->
-        <p th:if="${bookings == null or bookings.isEmpty()}">No bookings yet.</p>
-
-        <table class="result-table" th:if="${bookings != null and !bookings.isEmpty()}">
+        <h1>Bookings</h1>
+        <table class="bookings" th:if="${bookings != null and !bookings.isEmpty()}">
             <thead>
                 <tr>
                     <th>Reference</th>
+                    <th>User</th>
                     <th>Flight</th>
                     <th>Seat</th>
                     <th>Status</th>
-                    <th>Booked</th>
-                    <th>Paid</th>
-                    <th></th>
+                    <th>Booked At</th>
+                    <th>Price Paid</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr th:each="booking : ${bookings}">
                     <td th:text="${booking.bookingReference}"></td>
+                    <td th:text="${booking.user.username}"></td>
                     <td th:text="${booking.flight.origin.city + ' -> ' + booking.flight.destination.city}"></td>
                     <td th:text="${booking.seat.seatNumber}"></td>
                     <td th:text="${booking.bookingStatus}"></td>
                     <td th:text="${booking.bookedAt}"></td>
                     <td th:text="${booking.pricePaid}"></td>
                     <td>
-                        <!-- Cancel only shows for active booking -->
                         <form th:if="${booking.bookingStatus.name() == 'CONFIRMED'}"
-                              th:action="@{/bookings/{ref}/cancel(ref=${booking.bookingReference})}" method="post">
+                              th:action="@{/admin/bookings/{ref}/cancel(ref=${booking.bookingReference})}" method="post">
                             <button class="booking-cancel" type="submit">Cancel</button>
                         </form>
                     </td>

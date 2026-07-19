@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('Flights')}"></head>
+<body>
+    <nav th:replace="~{fragments/adminNav :: navbar}"></nav>
+
+    <div class="container">
+
+        <h1>Flights</h1>
+        <table th:if="${flights != null and !flights.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="flight : ${flights}">
+                    <td th:text="${flight.flightNumber}"></td>
+                    <td th:text="${flight.origin.city + ' (' + flight.origin.name + ')'}"></td>
+                    <td th:text="${flight.destination.city + ' (' + flight.destination.name + ')'}"></td>
+                    <td th:text="${#temporals.format(flight.departureTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#temporals.format(flight.arrivalTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${flight.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h1>Create Flight</h1>
+        <form method="post" th:object="${flightForm}" th:action="@{/admin/flights}">
+
+            <span class="error" th:errors="*{flightNumber}"></span>
+            <input type="text" th:field="*{flightNumber}" placeholder="Flight Number" />
+
+            <span class="error" th:errors="*{originCode}"></span>
+            <select th:field="*{originCode}">
+                <option value="">Origin</option>
+                <option th:each="airport : ${airports}"
+                        th:value="${airport.code}"
+                        th:text="${airport.city + ' (' + airport.name + ')'}"
+                ></option>
+            </select>
+
+            <span class="error" th:errors="*{destinationCode}"></span>
+            <select th:field="*{destinationCode}">
+                <option value="">Destination</option>
+                <option th:each="airport : ${airports}"
+                        th:value="${airport.code}"
+                        th:text="${airport.city + ' (' + airport.name + ')'}"
+                ></option>
+            </select>
+
+            <span class="error" th:errors="*{departureTime}"></span>
+            <input type="datetime-local" th:field="*{departureTime}" />
+
+            <span class="error" th:errors="*{arrivalTime}"></span>
+            <input type="datetime-local" th:field="*{arrivalTime}" />
+
+            <span class="error" th:errors="*{price}"></span>
+            <label for="flightPrice">Price</label>
+            <input id="flightPrice" type="number" name="price" th:value="${price}" />
+
+            <span class="error" th:errors="*{seatRows}"></span>
+            <label for="seatRows">Rows Of Seats</label>
+            <input id="seatRows" type="number" th:field="*{seatRows}" placeholder="Rows of seats" />
+
+            <input type="submit" value="Create" />
+        </form>
+    </div>
+</body>
+</html>

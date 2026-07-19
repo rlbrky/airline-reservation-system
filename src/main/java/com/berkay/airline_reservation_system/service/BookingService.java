@@ -5,11 +5,13 @@ import com.berkay.airline_reservation_system.exception.SeatUnavailableException;
 import com.berkay.airline_reservation_system.model.*;
 import com.berkay.airline_reservation_system.repository.BookingRepository;
 import com.berkay.airline_reservation_system.repository.SeatRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -90,5 +92,35 @@ public class BookingService {
         }
 
         return builder.toString();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    public void adminCancel(String bookingRef) {
+
+        Booking booking = bookingRepository.findByBookingReference(bookingRef)
+                .orElseThrow(() -> new NotFoundException("No such booking: " + bookingRef));
+
+        if(booking.getBookingStatus() != BookingStatus.CONFIRMED) {
+            throw new IllegalArgumentException("Booking is not active!");
+        }
+
+        booking.setBookingStatus(BookingStatus.CANCELED);
+        booking.getSeat().setSeatStatus(SeatStatus.AVAILABLE);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(readOnly = true)
+    public List<Booking> getAllBookingsNewestFirst() {
+
+        /*
+            Manual sorting
+        List<Booking> allBookings = bookingRepository.findAll();
+
+        return allBookings.stream().sorted(Comparator.comparing(Booking::getBookedAt)
+                        .reversed())
+                            .toList(); */
+        // DB handles sorting
+        return bookingRepository.findAllByOrderByBookedAtDesc();
     }
 }

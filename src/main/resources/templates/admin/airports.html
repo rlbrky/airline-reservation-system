@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('Airports')}"></head>
+<body>
+    <nav th:replace="~{fragments/adminNav :: navbar}"></nav>
+
+    <div class="container">
+
+        <h1>Airports</h1>
+        <table class="airports-list" th:if="${airports != null and !airports.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="airport : ${airports}">
+                    <td th:text="${airport.code}"></td>
+                    <td th:text="${airport.name}"></td>
+                    <td th:text="${airport.city}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h1>Create Airport</h1>
+        <form th:action="@{/admin/airports}" th:object="${airportForm}" method="post">
+            <span class="error" th:errors="*{code}"></span>
+            <input type="text" th:field="*{code}" placeholder="Airport Code" />
+            <span class="error" th:errors="*{name}"></span>
+            <input type="text" th:field="*{name}" placeholder="Airport Name" />
+            <span class="error" th:errors="*{city}"></span>
+            <input type="text" th:field="*{city}" placeholder="Airport City" />
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</body>
+</html>

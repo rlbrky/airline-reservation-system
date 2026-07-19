@@ -1,13 +1,18 @@
 package com.berkay.airline_reservation_system.config;
 
+import com.berkay.airline_reservation_system.model.AirlineUser;
 import com.berkay.airline_reservation_system.model.Airport;
 import com.berkay.airline_reservation_system.model.Flight;
+import com.berkay.airline_reservation_system.model.Role;
 import com.berkay.airline_reservation_system.repository.AirportRepository;
 import com.berkay.airline_reservation_system.repository.FlightRepository;
 import com.berkay.airline_reservation_system.repository.SeatRepository;
+import com.berkay.airline_reservation_system.repository.UserRepository;
 import com.berkay.airline_reservation_system.service.SeatService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -26,11 +31,16 @@ public class DataSeeder implements CommandLineRunner {
 
     private final SeatService seatService;
 
-    public DataSeeder(AirportRepository airportRepository, FlightRepository flightRepository, SeatRepository seatRepository, SeatService seatService) {
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public DataSeeder(AirportRepository airportRepository, FlightRepository flightRepository, SeatRepository seatRepository, SeatService seatService, UserRepository userRepository) {
         this.airportRepository = airportRepository;
         this.flightRepository = flightRepository;
         this.seatRepository = seatRepository;
         this.seatService = seatService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -158,6 +168,15 @@ public class DataSeeder implements CommandLineRunner {
             if (seatRepository.findByFlight(f).isEmpty()) {
                 seatService.generateSeats(f, 10);
             }
+        }
+
+        if (userRepository.findByUsername("admin").isEmpty()) {
+            AirlineUser admin = new AirlineUser();
+            admin.setUsername("admin");
+            admin.setPasswordHash(passwordEncoder.encode("admin"));   // dev only
+            admin.setFullName("Site Admin");
+            admin.setRole(Role.ADMIN);
+            userRepository.save(admin);
         }
     }
 }
