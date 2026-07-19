@@ -1,5 +1,7 @@
 package com.berkay.airline_reservation_system.service;
 
+import com.berkay.airline_reservation_system.exception.NotFoundException;
+import com.berkay.airline_reservation_system.exception.SeatUnavailableException;
 import com.berkay.airline_reservation_system.model.*;
 import com.berkay.airline_reservation_system.repository.BookingRepository;
 import com.berkay.airline_reservation_system.repository.SeatRepository;
@@ -36,7 +38,7 @@ public class BookingService {
         Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new IllegalArgumentException("Seat not found: " + seatId));
 
         if(seat.getSeatStatus() == SeatStatus.BOOKED){
-            throw new IllegalArgumentException("Seat is already booked");
+            throw new SeatUnavailableException("Seat is already booked");
         }
 
         seat.setSeatStatus(SeatStatus.BOOKED);
@@ -60,7 +62,7 @@ public class BookingService {
     public void cancel(String bookingRef, String username) {
 
         Booking booking = bookingRepository.findByBookingReference(bookingRef)
-                .orElseThrow(() -> new IllegalArgumentException("No such booking: " + bookingRef));
+                .orElseThrow(() -> new NotFoundException("No such booking: " + bookingRef));
 
         if(!booking.getUser().getUsername().equals(username)) {
             throw new IllegalArgumentException("You can only cancel your own bookings!");

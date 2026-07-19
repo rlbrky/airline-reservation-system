@@ -1,5 +1,7 @@
 package com.berkay.airline_reservation_system.controller;
 
+import com.berkay.airline_reservation_system.exception.NotFoundException;
+import com.berkay.airline_reservation_system.exception.SeatUnavailableException;
 import com.berkay.airline_reservation_system.model.Booking;
 import com.berkay.airline_reservation_system.service.BookingService;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -29,7 +31,10 @@ public class BookingController {
             Booking booking = bookingService.book(principal.getName(), seatId);
             ra.addFlashAttribute("message", "Booking has been successfully booked!");
             ra.addFlashAttribute("bookingReference", booking.getBookingReference());
-        } catch (IllegalArgumentException e) {
+        } catch (SeatUnavailableException exc) {
+            ra.addFlashAttribute("error", "Seat is taken!");
+        }
+        catch (IllegalArgumentException e) {
 
             ra.addFlashAttribute("error", e.getMessage());
         } catch (ObjectOptimisticLockingFailureException ex) {
@@ -58,8 +63,10 @@ public class BookingController {
             bookingService.cancel(bookingRef, principal.getName());
             ra.addFlashAttribute("message", "Booking has been successfully cancelled!");
             ra.addFlashAttribute("bookingReference", bookingRef);
-        } catch (IllegalArgumentException e) {
+        } catch (NotFoundException e) {
             ra.addFlashAttribute("error", e.getMessage());
+        } catch (IllegalArgumentException ex) {
+            ra.addFlashAttribute("error", ex.getMessage());
         }
 
         return "redirect:/bookings";

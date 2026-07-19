@@ -1,5 +1,6 @@
 package com.berkay.airline_reservation_system.service;
 
+import com.berkay.airline_reservation_system.exception.NotFoundException;
 import com.berkay.airline_reservation_system.model.Flight;
 import com.berkay.airline_reservation_system.repository.FlightRepository;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,6 @@ public class FlightService {
     @Transactional(readOnly = true)
     public Flight getById(Long id) {
         return flightRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Flight not found: " + id));
+                .orElseThrow(() -> new NotFoundException("Flight not found: " + id));
     }
 }
