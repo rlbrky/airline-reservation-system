@@ -1,43 +1,153 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  color: #1a1a1a;
+  background: #f7f7f8;
+}
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  background: #1f2937;
+}
+nav a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+nav a:hover {
+  color: #fff;
+}
+nav form {
+  margin-left: auto;
+}
+.container {
+  max-width: 960px;
+  margin: 1.5rem auto;
+  padding: 0 1.25rem;
+}
+h1 {
+  font-size: 1.5rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background: #fff;
+}
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+th {
+  background: #f3f4f6;
+}
+form.stacked-form,
+.container > form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 360px;
+}
+input,
+select,
+button {
+  padding: 0.5rem;
+  font: inherit;
+}
+button,
+input[type="submit"] {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover {
+  background: #1d4ed8;
+}
+/* negative / destructive actions: cancel, logout, etc. */
+.btn-danger,
+.booking-cancel {
+  background: #dc2626;
+}
+.btn-danger:hover,
+.booking-cancel:hover {
+  background: #b91c1c;
+}
+.message {
+  color: #166534;
+  background: #dcfce7;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+.error,
+.field-error {
+  color: #991b1b;
+}
+.error {
+  background: #fee2e2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+.legend {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
 .seat-map {
-    display: grid;
-    grid-template-columns: repeat(6, 44px);
-    gap: 8px;
-    margin: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(6, 44px);
+  gap: 8px;
+  margin: 1rem 0;
 }
 
 /* the form is not a visual cell — let its button be the grid item */
 .seat-map > form {
-    display: contents;
+  display: contents;
 }
 
 .seat-map > div {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    user-select: none;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  user-select: none;
 }
 .seat-available {
-    background: #cdeccd;
-    border: 1px solid #4c9a4c;
-    cursor: pointer;
+  background: #cdeccd;
+  border: 1px solid #4c9a4c;
+  cursor: pointer;
 }
-.seat-booked    {
-    background: #ddd;
-    border: 1px solid #999;
-    color: #777;
+.seat-booked {
+  background: #ddd;
+  border: 1px solid #999;
+  color: #777;
 }
 
 /* shared seat box (was .seat-map > div) — now applies to button AND div */
 .seat {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    border: 1px solid transparent;
-    font-family: inherit;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+
+/* error pages: dark-red heading for an error look */
+.error-page h1 {
+  color: #7f1d1d;
 }

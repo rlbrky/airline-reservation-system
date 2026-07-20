@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('No Permission')}"></head>
+<body>
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+<div class="container error-page">
+    <h1>You Don't Have Permission To Access This Page</h1>
+    <p th:if="${message}" th:text="${message}"></p>
+    <a th:href="@{/}">Home</a>
+</div>
+</body>
+</html>
