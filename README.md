@@ -18,11 +18,11 @@
 ### Admin flights management panel
 <img width="1012" height="1022" alt="Admin panel with the create-flight form and a list of existing flights" src="https://github.com/user-attachments/assets/d801b0e3-9204-477d-9845-413a08a9902a" />
 
-### Admin airport maangement panel
+### Admin airport mangement panel
 <img width="997" height="612" alt="Admin panel with create-airport form and a list of existing airports" src="https://github.com/user-attachments/assets/936538c2-f835-4da4-bad2-465d28995f8d" />
 
 ### Admin booking management panel
-<img width="981" height="386" alt="Admin panel that lets admin cancel anyones booking with a list of all bookings" src="https://github.com/user-attachments/assets/40ac4dbe-3a66-4be8-881f-c0c2848f9ea3" />
+<img width="981" height="386" alt="Admin panel that lets admin cancel anyone's booking with a list of all bookings" src="https://github.com/user-attachments/assets/40ac4dbe-3a66-4be8-881f-c0c2848f9ea3" />
 
 ## Features
 - **User registration and login**
